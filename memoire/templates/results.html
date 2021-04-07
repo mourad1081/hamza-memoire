@@ -1,0 +1,68 @@
+{% extends 'theme.html' %}
+{% load static %}
+
+{% block main %}
+    <div class="container mt-4">
+        <p class="alert alert-info">
+            Found <span class="text-primary">{{ total_found }}</span> results for
+            search <span class="text-primary">"{{ request.GET.query }}"</span>
+        </p>
+
+        {% if references %}
+            <h4><i class="fa fa-file"></i> {{ references.count }} Reference(s) found</h4>
+            <div class="list-group my-4">
+                {% for reference in references %}
+                    <a
+                        href="{% url 'reference' reference_id=reference.id %}"
+                        class="list-group-item list-group-item-action"
+                        aria-current="true"
+                    >
+                        <div class="d-flex w-100 justify-content-between">
+                            <strong class="mb-1"><i class="fa fa-file"></i> {{ reference.title }}</strong>
+                            <small><i class="fa fa-comments"></i> {{ reference.comment_set.count }} comments</small>
+                        </div>
+                        <small class="text-muted">
+                            <i class="fa fa-book"></i> {{ reference.journal.name }}
+                            {% for author in reference.authors.all %}
+                                <i class="fa fa-user"></i> {{ author.first_name }} {{ author.last_name }}
+                            {% endfor %}
+                        </small>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if journals %}
+            <h4><i class="fa fa-book"></i> {{ journals.count }} Journal(s) found</h4>
+            <div class="list-group my-4">
+                {% for journal in journals %}
+                    <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                        <i class="fa fa-book"></i> {{ journal.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if disciplines %}
+            <h4><i class="fa fa-atom"></i> {{ disciplines.count }} Disciplines(s) found</h4>
+            <div class="list-group my-4">
+                {% for discipline in disciplines %}
+                    <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                        <i class="fa fa-atom"></i> {{ discipline.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if authors %}
+            <h4><i class="fa fa-users"></i> {{ authors.count }} Author(s) found</h4>
+            <div class="list-group my-4">
+                {% for author in authors %}
+                    <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                        <i class="fa fa-user"></i> {{ author.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

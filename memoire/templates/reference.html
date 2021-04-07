@@ -1,0 +1,50 @@
+{% extends 'theme.html' %}
+{% load static %}
+
+{% block main %}
+    <div class="container my-4">
+        <h2><i class="fa fa-file"></i> {{ reference.title }}</h2>
+        <div>
+            <i class="fa fa-users"></i> Authors:
+            {% for author in reference.authors.all %}
+                <a href="#"><i class="fa fa-user"></i> {{ author.first_name }} {{ author.last_name }}</a>
+            {% endfor %}
+        </div>
+        <div><i class="fa fa-book"></i> Published in: <strong>{{ reference.journal.name }}</strong></div>
+
+        <hr class="my-4"/>
+
+        <h4><i class="fa fa-comments"></i> Comments</h4>
+
+        {% if reference.comment_set.count == 0 %}
+            <p class="alert alert-info"><i class="fa fa-info-circle"></i> No comment posted yet</p>
+        {% else %}
+            {% for comment in reference.comment_set.all %}
+                <div class="row">
+                    <div class="col-2 text-muted">
+                        {{ comment.created }}
+                    </div>
+                    <div class="col-10 comment">
+                        {{ comment.message }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'add_comment' reference_id=reference.id %}" method="post">
+            <div class="mb-3 row">
+                <label for="comment" class="col-sm-2 col-form-label">Your comment</label>
+                <div class="col-sm-10">
+                    <textarea name="message" class="form-control" id="comment" rows="3"></textarea>
+                </div>
+            </div>
+            {% csrf_token %}
+            <div class="mb-3 row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary col-12"><i class="fa fa-envelope"></i> Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

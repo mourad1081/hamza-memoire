@@ -1,0 +1,41 @@
+{% extends 'theme.html' %}
+{% load static %}
+
+{% block main %}
+    <div id="home" class="container mt-4">
+        <main class="row">
+            <div class="col-md-12">
+                <img src="{% static 'logo.svg' %}" alt=""/>
+            </div>
+            <form class="col-md-12" action="{% url 'search' %}" method="get">
+                <div class="input-group my-3">
+                    <input name="query" type="text" class="form-control input-search"
+                           placeholder="Search a reference, author, journal or discipline..."/>
+                    <button type="submit" class="btn btn-light search input-group-btn"><i class="fa fa-search"></i>
+                    </button>
+                </div>
+                <small class="text-muted">You can turn on or off specific result types</small>
+                <div style="display: flex;justify-content: space-evenly;" class="my-3">
+                    <div class="form-check form-switch">
+                        <input name="references" class="form-check-input" type="checkbox" id="ref" checked/>
+                        <label class="form-check-label" for="ref"> References</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input name="authors" class="form-check-input" type="checkbox" id="auth"/>
+                        <label class="form-check-label" for="auth"> Authors</label>
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input name="journals" class="form-check-input" type="checkbox" id="jour"/>
+                        <label class="form-check-label" for="jour"> Journal</label>
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input name="disciplines" class="form-check-input" type="checkbox" id="dis"/>
+                        <label class="form-check-label" for="dis"> Disciplines</label>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+{% endblock %}
