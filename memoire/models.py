@@ -16,7 +16,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=100)
     affiliation = models.ForeignKey(Affiliation, null=True, on_delete=models.SET_NULL)
     country = models.ForeignKey(Country, to_field='code', null=True, on_delete=models.SET_NULL)
-    email = models.CharField(max_length=100)
+    email = models.CharField(max_length=100, null=True)
 
 
 class Journal(models.Model):
@@ -30,7 +30,7 @@ class Discipline(models.Model):
 class Reference(models.Model):
     authors = models.ManyToManyField(Author)
     title = models.CharField(max_length=500)
-    year = models.PositiveIntegerField()
+    year = models.PositiveIntegerField(null=True)
     journal = models.ForeignKey(Journal, on_delete=models.SET_NULL, null=True)
     volume = models.CharField(max_length=10)
     pages = models.CharField(max_length=20)

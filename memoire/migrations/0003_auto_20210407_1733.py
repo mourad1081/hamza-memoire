@@ -7,7 +7,7 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('memoire', '0004_comment'),
+        ('memoire', '0002_comment'),
     ]
 
     operations = [
@@ -19,5 +19,15 @@ class Migration(migrations.Migration):
             model_name='comment',
             name='created',
             field=models.DateTimeField(default=django.utils.timezone.now, null=True),
+        ),
+        migrations.AlterField(
+            model_name='author',
+            name='email',
+            field=models.CharField(max_length=100, null=True),
+        ),
+        migrations.AlterField(
+            model_name='reference',
+            name='year',
+            field=models.PositiveIntegerField(null=True),
         ),
     ]
