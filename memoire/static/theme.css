@@ -1,5 +1,60 @@
-main {
+body {
+    font-family: Georgia, Times, "Times New Roman", serif;
+}
+
+body a {
+    color: #1e347b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.item {
+    padding: 10px;
+    transition: all ease-out .4s;
+}
+
+#other, #critics {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.filters {
+    padding: 20px;
+    background-color: #fafafa;
+}
+
+#home {
+    height: calc(100vh - 100px);
+    display: flex;
+    align-items: stretch;
+    justify-items: center;
+    align-content: center;
     text-align: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+li[role='presentation'] i {
+    color: darkred;
+}
+
+.title {
+    font-weight: bold;
+    color: #2C2C2C;
+}
+
+.hr {
+    background-color: #aaaaaa;
+}
+
+.meta {
+    background-color: #f9f9f9;
+    padding: 10px;
+}
+
+.item:hover {
+    background-color: #f9f9f9;
 }
 
 .input-search {
@@ -11,12 +66,6 @@ form {
     margin-top: 25px;
 }
 
-.search {
-    background: transparent;
-    border: 1px solid #ced4da;
-    border-left: none;
-}
-
 .comment {
     position: relative;
     background: #eeeeee;
@@ -24,7 +73,10 @@ form {
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 10px;
+    white-space: pre-line;
+    width: 80%;
 }
+
 .comment:after {
     content: '';
     position: absolute;

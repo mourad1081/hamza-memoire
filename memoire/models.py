@@ -4,10 +4,10 @@ from django.utils.timezone import now
 
 class DisplayName:
     def __str__(self):
-        if hasattr(self, 'name'):
-            return self.name
         if hasattr(self, 'code'):
             return self.code
+        if hasattr(self, 'name'):
+            return self.name
         if hasattr(self, 'first_name') and hasattr(self, 'last_name'):
             return f'{self.first_name} {self.last_name}'
         if hasattr(self, 'title'):
@@ -49,7 +49,11 @@ class Reference(DisplayName, models.Model):
     journal = models.ForeignKey(Journal, on_delete=models.SET_NULL, null=True)
     volume = models.CharField(max_length=10)
     pages = models.CharField(max_length=20)
+    doi = models.CharField(max_length=250, null=True)
+    country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
     disciplines = models.ManyToManyField(Discipline)
+    seen = models.PositiveIntegerField(default=0, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Comment(DisplayName, models.Model):

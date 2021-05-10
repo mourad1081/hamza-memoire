@@ -1,50 +1,103 @@
-{% extends 'theme.html' %}
+{% extends 'theme-item.html' %}
 {% load static %}
 
 {% block main %}
-    <div class="container my-4">
-        <h2><i class="fa fa-file"></i> {{ reference.title }}</h2>
-        <div>
-            <i class="fa fa-users"></i> Authors:
-            {% for author in reference.authors.all %}
-                <a href="#"><i class="fa fa-user"></i> {{ author.first_name }} {{ author.last_name }}</a>
-            {% endfor %}
+    <div id="reference" class="container my-4">
+        <h2 class="title">{{ reference.title }}</h2>
+
+        <hr class="hr my-4"/>
+
+        <div class="meta">
+            <p>
+                <i class="fa fa-users mx-2"></i> Authors:
+                {% for author in reference.authors.all %}
+                    <a class="mx-1" href="{% url 'author' author_id=author.id %}">{{ author.first_name }} {{ author.last_name }}</a>
+                {% endfor %}
+            </p>
+            <p><i class="fa fa-calendar mx-2"></i> Publication year: <strong>{{ reference.year }}</strong></p>
+            <p><i class="fa fa-book mx-2"></i> Published in: <strong>{{ reference.journal.name }}</strong>, vol.
+                <strong>{{ reference.volume }}</strong>, page <strong>{{ reference.pages }}</strong></p>
+            <p><i class="fa fa-link mx-2"></i> DOI: <a href="{{ reference.doi|default:'#' }}">{{ reference.doi|default:'N/A' }}</a></p>
+            <p>
+                <i class="fa fa-atom mx-2"></i> Disciplines:
+                {% for discipline in reference.disciplines.all %}
+                    <a href="#"><span class="badge bg-secondary mx-1">{{ discipline.name }}</span></a>
+                {% endfor %}
+            </p>
         </div>
-        <div><i class="fa fa-book"></i> Published in: <strong>{{ reference.journal.name }}</strong></div>
 
-        <hr class="my-4"/>
+        <hr class="hr my-4"/>
 
-        <h4><i class="fa fa-comments"></i> Comments</h4>
+        <div class="m-2">
+            <strong><i class="fa fa-chart-bar mx-2"></i> Statistics</strong> <br/>
+            <p class="p-2">
+                This article has been consulted <strong>{{ reference.seen }}</strong> time(s)
+                since its publication date on Promethee, on <strong>{{ reference.created_at }}</strong>
+            </p>
+        </div>
+        <div class="m-2 my-4">
+            <strong><i class="fa fa-align-left mx-2"></i> Abstract</strong> <br/>
+            <p class="p-2">
+                <em class="text-muted">No abstract provided</em>
+            </p>
+        </div>
 
-        {% if reference.comment_set.count == 0 %}
-            <p class="alert alert-info"><i class="fa fa-info-circle"></i> No comment posted yet</p>
-        {% else %}
-            {% for comment in reference.comment_set.all %}
-                <div class="row">
-                    <div class="col-2 text-muted">
-                        {{ comment.created }}
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="critics-tab" data-bs-toggle="tab" data-bs-target="#critics"
+                        type="button"
+                        role="tab" aria-controls="critics" aria-selected="true">
+                    <i class="fa fa-comments mx-2"></i> Critics
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="other-tab" data-bs-toggle="tab" data-bs-target="#other" type="button"
+                        role="tab" aria-controls="other" aria-selected="false">
+                    <i class="fa fa-bookmark mx-2"></i> Similar works
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active p-2" id="critics" role="tabpanel" aria-labelledby="critics-tab">
+                {% if reference.comment_set.count == 0 %}
+                    <p class="alert alert-light"><i class="fa fa-info-circle"></i> No comment posted yet</p>
+                {% else %}
+                    {% for comment in reference.comment_set.all %}
+                        <div class="row">
+                            <div class="col-2 text-muted">
+                                {{ comment.created }}
+                            </div>
+                            <div class="col-10 comment">
+                                {{ comment.message }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form action="{% url 'add_comment' reference_id=reference.id %}" method="post">
+                    <div class="mb-3 row">
+                        <label for="comment" class="col-sm-2 col-form-label">Your comment</label>
+                        <div class="col-sm-10">
+                            <textarea name="message" class="form-control" id="comment" rows="3"></textarea>
+                        </div>
                     </div>
-                    <div class="col-10 comment">
-                        {{ comment.message }}
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <div class="mb-3 row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary col-12"><i class="fa fa-envelope"></i> Submit
+                            </button>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        <form action="{% url 'add_comment' reference_id=reference.id %}" method="post">
-            <div class="mb-3 row">
-                <label for="comment" class="col-sm-2 col-form-label">Your comment</label>
-                <div class="col-sm-10">
-                    <textarea name="message" class="form-control" id="comment" rows="3"></textarea>
-                </div>
+                </form>
             </div>
-            {% csrf_token %}
-            <div class="mb-3 row">
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary col-12"><i class="fa fa-envelope"></i> Submit</button>
-                </div>
+            <div class="tab-pane fade" id="other" role="tabpanel" aria-labelledby="other-tab">
+                <p class="p-2">
+                    {% for reference in similar_references %}
+                        {% include 'bibliography_item.html' with reference=reference %}
+                    {% endfor %}
+                </p>
             </div>
-        </form>
+        </div>
     </div>
 {% endblock %}

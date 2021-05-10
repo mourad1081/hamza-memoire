@@ -1,0 +1,28 @@
+{% extends 'theme.html' %}
+{% load static %}
+
+{% block main %}
+    <div id="author" class="container my-4">
+        <h2 class="title">
+            <span class="text-muted"><i class="fa fa-user mx-2"></i></span>
+            {{ author.first_name }} {{ author.last_name }}
+        </h2>
+
+        <hr class="hr my-4"/>
+
+        <div class="meta">
+            <p><i class="fa fa-map-marker mx-2"></i> Country: <strong>{{ author.country.code }}</strong></p>
+            <p><i class="fa fa-envelope mx-2"></i> Email: <strong>{{ author.email }}</strong></p>
+            <p><i class="fa fa-building mx-2"></i> Affiliation: <strong>{{ author.affiliation.name }}</strong></p>
+        </div>
+
+        <hr class="hr my-4"/>
+        <div class="m-2">
+            <strong><i class="fa fa-chart-bar mx-2"></i> Published works</strong> <br/>
+            {% for reference in author.reference_set.all %}
+                {% include 'bibliography_item.html' with reference=reference %}
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% url 'reference' reference_id=reference.id as url %}
+<div class="item my-4">
+    <i class="fa fa-file mx-2"></i>
+    <a href="{{ url }}">{{ reference.title }}</a>
+    <br/>
+    <small class="text-muted">
+
+        <i class="fa fa-calendar mx-2"></i> Published in <strong>{{ reference.year }}</strong> in
+        <i class="fa fa-book mx-2"></i><a href="{% url 'journal' journal_id=reference.journal.id %}"><strong>{{ reference.journal.name }}</strong></a>, vol.
+        <strong>{{ reference.volume }}</strong>, page <strong>{{ reference.pages }}</strong>
+        {% for discipline in reference.disciplines.all %}
+            <a href="{% url 'discipline' discipline_id=discipline.id %}">
+                <span class="badge bg-secondary mx-1">{{ discipline.name }}</span>
+            </a>
+        {% endfor %}
+
+        <br/>
+
+        <small><i class="fa fa-comments mx-2"></i> {{ reference.comment_set.count }} comments</small>
+        <small><i class="fa fa-eye mx-2"></i> Seen {{ reference.seen }} times</small>
+
+        <br/>
+
+        <span><i class="fa fa-users mx-2"></i> Authors: </span>
+        {% for author in reference.authors.all %}
+            <a href="{% url 'author' author_id=author.id %}">
+                <span class="mx-1">{{ author.first_name }} {{ author.last_name }}</span>
+            </a>
+        {% endfor %}
+    </small>
+</div>
+<hr class="hr"/>

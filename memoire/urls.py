@@ -16,11 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from memoire.views import home, search, reference, add_comment
+from memoire.views import home, search, reference, add_comment, author, journal, discipline
 
 urlpatterns = [
     path('', home, name='home'),
     path('references/<int:reference_id>', reference, name='reference'),
+    path('authors/<int:author_id>', author, name='author'),
+    path('journals/<int:journal_id>', journal, name='journal'),
+    path('disciplines/<int:discipline_id>', discipline, name='discipline'),
     path('references/<int:reference_id>/comments', add_comment, name='add_comment'),
     path('search/', search, name='search'),
     path('admin/', admin.site.urls),

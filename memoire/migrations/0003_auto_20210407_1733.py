@@ -30,4 +30,25 @@ class Migration(migrations.Migration):
             name='year',
             field=models.PositiveIntegerField(null=True),
         ),
+        migrations.AddField(
+            model_name='reference',
+            name='doi',
+            field=models.CharField(max_length=250, null=True),
+        ),
+        migrations.AddField(
+            model_name='reference',
+            name='created_at',
+            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            preserve_default=False,
+        ),
+        migrations.AddField(
+            model_name='reference',
+            name='seen',
+            field=models.PositiveIntegerField(default=0),
+        ),
+        migrations.AddField(
+            model_name='reference',
+            name='country',
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='memoire.country'),
+        ),
     ]
